@@ -1,0 +1,441 @@
+@import url("thema.css");
+
+.map_container {
+    flex: 1 1 0;
+    height: 85vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.map_container_top {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 2rem;
+}
+
+/* title */
+/* 各ページのタイトルの設定を指定(他の指定はcommon.cssに記述) */
+.page_title::before,
+.page_title::after {
+    content: "DATA MAP";
+}
+
+.axis_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time_line_container {
+    height: auto;
+    width: 500%;
+    display: flex;
+    overflow: hidden;
+    text-shadow: var(--shadow1);
+    letter-spacing: .05rem;
+}
+
+.eachMonth {
+    position: relative;
+    right: 0vw;
+    color: var(--fourth-color);
+    padding-bottom: .3em;
+    display: flex;
+    align-items: center;
+}
+
+.canvas_container {
+    position: relative;
+    height: 70vh;
+    width: 100%;
+    margin-bottom: 2vh;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    border: 2px solid var(--primary-color-opacity1);
+    background-color: var(--fifth-color-opacity2);
+    box-shadow: var(--shadow9);
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+.data_map_tooltip {
+    position: absolute;
+    background: var(--primary-color-thin1);
+    color: var(--fourth-color);
+    text-align: center;
+    padding: 0.5rem;
+    letter-spacing: 0.05em;
+    font-family: var(--sub-font);
+    font-size: var(--font-size8);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.popup.popup_properties {
+    width: 40%;
+}
+
+.popup.popup_properties .popup_bottom_container {
+    display: block;
+}
+
+.popup.popup_properties .file_properties_container {
+    width: 96%;
+    margin: 0 auto;
+}
+
+.popup.popup_properties .popup_title::after {
+    width: 50%;
+}
+
+.popup.popup_properties .popup_button:not(:first-child) {
+    margin: 0;
+}
+
+.popup_file_search_container {
+    align-items: flex-start;
+}
+
+.contained_node_element {
+    height: 30px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.contained_node_icon {
+    float: left;
+    height: 100%;
+    width: 30px;
+    background: center center / contain no-repeat;
+}
+
+.contained_dataset_icon {
+    background-image: url("../img/folder_white.svg");
+}
+
+.contained_data_icon {
+    background-image: url("../img/file_white.svg");
+}
+
+.contained_node_title {
+    float: left;
+    height: 100%;
+    font-size: 20px;
+    line-height: 30px;
+    margin-left: 15px;
+}
+
+.contained_node_download {
+    float: right;
+    height: 100%;
+    width: 30px;
+    background: center center / cover no-repeat;
+    background-image: url("../img/download.svg");
+    cursor: pointer;
+}
+
+.contained_node_download a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/******************** XY Axis dropdown menu start ********************/
+.displayIcon {
+    float: right;
+    margin-top: 0.23vw;
+}
+
+.dropdown {
+    margin-right: 1em;
+    padding: 0 2em;
+    font-size: var(--font-size1);
+    background-color: var(--primary-color-opacity1);
+    border-radius: 2px;
+    transition: all .5s ease;
+    position: relative;
+    transition: all .3s ease;
+}
+
+.xy_style {
+    display: inline-block;
+    color: var(--fourth-color);
+    text-align: left;
+    opacity: 1;
+    font-weight: bold;
+    letter-spacing: .1em;
+    text-shadow: var(--shadow1);
+    user-select: none;
+    cursor: pointer;
+}
+
+.dropdown::before {
+    margin-right: .1em;
+    display: inline-block;
+    position: absolute;
+    left: .5em;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.x_position::before {
+    content: "X:";
+}
+
+.y_position::before {
+    content: "Y:";
+}
+
+.x_label_container {
+    margin-left: auto;
+}
+
+.y_label_container {
+    margin-left: -.5em;
+}
+
+.dropdown_label {
+    cursor: default;
+}
+
+/* font awesome arrow start */
+.arrow_right::after,
+.arrow_down::before,
+.download_data::after {
+    display: inline-block;
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+}
+
+.arrow_right::after {
+    content: "\f061";
+}
+
+.arrow_down::before {
+    content: "\f063";
+}
+
+.arrow_right.xy_style::after {
+    margin-left: 0;
+}
+
+.arrow_down.xy_style::before {
+    margin-left: .1em;
+}
+
+.arrow_right,
+.arrow_down {
+    cursor: default;
+}
+
+/* font awesome arrow end */
+
+.dropdown .select {
+    cursor: pointer;
+    display: block;
+    padding: 0.4vh 1.5vh;
+}
+
+.select>span::after {
+    content: "\f053";
+    display: inline-block;
+    font-family: "Font Awesome 5 Free";
+    font-weight: bold;
+    font-size: var(--font-size7);
+    text-shadow: var(--shadow1);
+    box-shadow: var(--shadow1);
+    text-align: center;
+    letter-spacing: normal;
+    background: var(--tertiary-color);
+    padding: .4em .5em .2em .5em;
+    position: absolute;
+    right: .5em;
+    border-radius: .3em;
+    color: var(--fifth-color-opacity1);
+    transition: all .3s ease;
+}
+
+.dropdown:hover {
+    color: var(--primary-color);
+    background-color: var(--tertiary-color-opacity1);
+    transition: all .3s ease;
+}
+
+.dropdown:active {
+    color: var(--fourth-color);
+    transition: all .3s ease;
+}
+
+.dropdown.active:hover,
+.dropdown.active {
+    color: var(--fourth-color);
+    transition: all .3s ease;
+}
+
+.dropdown.active .select>span::after {
+    transform: rotate(-90deg);
+    color: var(--primary-color);
+    transition: all .3s ease;
+}
+
+.dropdown .dropdown_menu {
+    position: absolute;
+    background-color: var(--fifth-color-thin3);
+    height: 0px;
+    width: 100%;
+    left: 0;
+    margin-top: 1px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 0 1px 5px 5px;
+    overflow: hidden;
+    z-index: 9;
+}
+
+.dropdown .dropdown_menu li {
+    padding: 1vh;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+    opacity: 0.7;
+    font-weight: normal;
+    font-size: var(--font-size8);
+    background-color: var(--fifth-color-thin1);
+}
+
+.dropdown .dropdown_menu li:not(:first-child) {
+    border-top: solid 2px var(--fifth-color-thin1);
+}
+
+.dropdown .dropdown_menu {
+    padding: 0;
+    list-style: none;
+}
+
+.dropdown .dropdown_menu li:hover {
+    color: var(--primary-color);
+    background-color: var(--fifth-color-thin3);
+    transition: all .3s ease;
+    opacity: 1;
+}
+
+.dropdown .dropdown_menu li:active {
+    color: var(--fourth-color);
+    transition: all .3s ease;
+}
+
+/******************* XY Axis dropdown menu end *******************/
+
+/******************* Data Download PopUp Menu start *******************/
+.id_search_container {
+    margin-right: 0 !important;
+}
+
+.property_search_container {
+    display: flex;
+    flex-direction: column;
+}
+
+.id_search_container,
+.property_search_container {
+    flex: .9;
+    overflow: auto;
+}
+
+.or {
+    flex: .2;
+    text-align: center;
+    line-height: var(--font-size4);
+    letter-spacing: .05em;
+    white-space: nowrap;
+    padding: 0 .5em;
+}
+
+.popup_content>div:first-child {
+    margin-right: 0;
+}
+
+#id_search_title::after,
+#property_search_title::after {
+    width: 100%;
+}
+
+#search_popup .popup_content {
+    width: 85%;
+}
+
+#id_search_input,
+#property_search_node_type_select {
+    font-size: var(--font-size1);
+}
+
+#id_search_input {
+    margin-top: .2em;
+    margin-bottom: 1rem;
+}
+
+.property_search_element,
+.property_element {
+    font-size: var(--font-size1);
+    padding: .2em 0;
+    margin-bottom: .5em;
+    word-break: break-all;
+}
+
+.property_search_element {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#property_search_property_container {
+    margin-top: 1.5rem;
+    flex: 1;
+}
+
+.property_search_element>*,
+.property_element>* {
+    display: inline-block;
+    font-size: var(--font-size1);
+}
+
+.property_search_element>* {
+    padding: .5em 0;
+}
+
+.property_element>* {
+    padding: .2em 0;
+}
+
+.property_search_element>div,
+.property_element>div {
+    display: inline-flex;
+    align-items: center;
+}
+
+.property_search_element>label,
+.property_element>label {
+    margin-right: .5em;
+    padding-bottom: .2em;
+    white-space: nowrap;
+}
+
+.property_search_element>*:not(label),
+.property_element>*:not(label) {
+    padding-left: .5em;
+    padding-right: .5em;
+    width: 100%;
+}
+
+/******************* Data Download PopUp Menu end *******************/
+
+th,
+td {
+    border: 1px solid white;
+    padding: 3px;
+}

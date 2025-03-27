@@ -1,0 +1,99 @@
+:root {
+    --title-font: "Orbitron", "Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+    --sub-font: "Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+
+    --font-size1: 1rem;
+    /* 16px=1rem の時 16px */
+    --font-size2: 1.125rem;
+    /* 16px=1rem の時 18px */
+    --font-size3: 1.5rem;
+    /* 16px=1rem の時 24px */
+    --font-size4: 2rem;
+    /* 16px=1rem の時 32px */
+    --font-size5: 2.25rem;
+    /* 16px=1rem の時 36px */
+    --font-size6: 3rem;
+    /* 16px=1rem の時 48px */
+    --font-size7: .687rem;
+    /* 16px=1rem の時 11px */
+    --font-size8: .812rem;
+    /* 16px=1rem の時 13px */
+    --font-size9: 3.5rem;
+    /* 16px=1rem の時 60px */
+    --font-size10: 1.25rem;
+    /* 16px=1rem の時 20px */
+    --font-size11: 1.875rem;
+    /* 16px=1rem の時 30px */
+    --font-size12: 11px;
+
+    --login-minWidth: 280px;
+    --box-width: 19vw;
+    --box-height: calc(var(--box-width) * 1.024);
+    --logo-width: max(15.6vw, 200px);
+    --header-height: max(48px,7.4vh);
+    --radius-large: 3.7vh;
+    --menu-width: max(84px, 6vw);
+    --menu-max-width: 90px;
+    --search-height: 3vw;
+    --page-menu-height: 50%;
+    --content-container-margin: 6.4vh;
+    --search-condition-padding: 1.9vh;
+    --search-condition-width: 10%;
+
+    --primary-color: rgb(0, 205, 212);
+    --secondary-color: #5FF5B5;
+    --tertiary-color: #FFFFD8;
+    --fourth-color: #E9EAEB;
+    --fifth-color: #000000;
+
+    --primary-color-thin1: hsla(183, 100%, 21%, 0.9);
+    --fifth-color-thin1: #666666;
+    --fifth-color-thin2: #555555;
+    --fifth-color-thin3: #333333;
+    --fifth-color-thin4: #999999;
+    --fifth-color-thin5: #aaaaaa;
+
+    --primary-color-opacity1: rgba(0, 205, 212, .5);
+    --primary-color-opacity2: rgba(0, 205, 212, .3);
+    --primary-color-opacity3: rgba(0, 205, 212, .2);
+    --primary-color-opacity4: rgba(0, 205, 212, .75);
+    --secondary-color-opacity1: rgba(95, 245, 181, .5);
+    --secondary-color-opacity2: rgba(95, 245, 181, .3);
+    --secondary-color-opacity3: rgba(95, 245, 181, .2);
+    --secondary-color-opacity4: rgba(95, 245, 181, .1);
+    --tertiary-color-opacity1: rgba(255, 255, 216, .5);
+    --tertiary-color-opacity2: rgba(255, 255, 216, .25);
+    --fourth-color-opacity1: rgba(233, 234, 235, .5);
+    --fourth-color-opacity2: rgba(233, 234, 235, .25);
+    --fourth-color-opacity3: rgba(233, 234, 235, .75);
+    --fourth-color-opacity4: rgba(233, 234, 235, .8);
+    --fourth-color-opacity5: rgba(233, 234, 235, .7);
+    --fifth-color-opacity1: rgba(0, 0, 0, .5);
+    --fifth-color-opacity2: rgba(0, 0, 0, .25);
+
+    --header-gradient: linear-gradient(to right, var(--primary-color-opacity2), var(--fifth-color-opacity2));
+    --current-gradient: radial-gradient(circle closest-corner, rgba(0, 205, 212, 0.15) 30%, rgba(0, 205, 212, 0) 30%), radial-gradient(circle closest-corner, rgba(0, 205, 212, .15) 50%, rgba(255, 255, 255, 0) 50%);
+    --hover-gradient: radial-gradient(circle closest-corner, rgba(0, 205, 212, 0.15) 20%, rgba(0, 205, 212, 0) 20%), radial-gradient(circle closest-corner, rgba(0, 205, 212, .15) 40%, rgba(255, 255, 255, 0) 40%);
+    --title-gradient: linear-gradient(to right, var(--secondary-color-opacity1), var(--secondary-color-opacity2));
+
+    /* --timeline-color-gradient: var(--secondary-color-opacity2)0%, var(--secondary-color-opacity2)40%, var(--secondary-color-opacity)70%, var(--secondary-color-opacity2)70%, var(--secondary-color-opacity2)85%, var(--secondary-color)100%;
+    --tertiary-color-gradient1: linear-gradient(rgba(38, 38, 38, .4), rgba(38, 38, 38, .6)); */
+
+    --shadow1: 0px 0px 6px var(--primary-color);
+    --shadow2: 0px 0px 6px var(--secondary-color-opacity);
+    --shadow3: 0px 0px 3px var(--fifth-color);
+    --shadow4: 0px 6px 6px var(--fifth-color);
+    --shadow5: 6px 0px 3px var(--fifth-color-opacity2);
+    --shadow6: 0px 3px 3px var(--fifth-color);
+    --shadow7: 0px 0px 6px var(--fifth-color);
+    --shadow8: 3px 0px 3px var(--fifth-color);
+    --shadow9: inset 0px 0px 12px var(--primary-color);
+    --shadow10: 0px 0px 10px var(--primary-color);
+    --shadow11: 0px 0px 3px var(--fifth-color);
+    --shadow12: inset 0px 0px 3px var(--fifth-color-opacity1);
+    --shadow13: inset 0px 0px 4px var(--primary-color);
+    --shadow14: 0px 0px 6px var(--fifth-color);
+    --shadow15: 0px 0px 6px var(--fourth-color);
+    --shadow16: inset 0px 0px 12px var(--fourth-color);
+    --shadow17: 0px 0px 3px var(--fifth-color-opacity1);
+}

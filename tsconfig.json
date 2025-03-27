@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    // "outDir": "./public/js",                       // Redirect output structure to the directory
+    // "rootDir": "./public/js",                  // Specify the root directory of input files
+    "lib": ["es2018", "dom"],
+  },
+  // "include": [
+  //   "public/js/**/*.ts",                       // Include all TypeScript files in the public/js directory
+  // ],
+  // "exclude": [
+  //   "node_modules"                            // Exclude the node_modules directory
+  // ]
+}

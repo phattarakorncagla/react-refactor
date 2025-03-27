@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_レイヤー_2" data-name="レイヤー 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.13 45.84">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #d7d7d9;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #d7d7d9;
+        stroke-miterlimit: 10;
+        stroke-width: 2.5px;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_1-2" data-name="レイヤー 1">
+    <g>
+      <g id="_グループ_700" data-name="グループ 700">
+        <path id="_長方形_707-2" data-name="長方形 707-2" class="cls-1" d="M29.2,32.91h8v1.43c0,5.52-4.48,10-10,10h0v-9.43c0-1.1.9-2,2-2h0Z"/>
+      </g>
+      <g>
+        <circle id="_楕円形_18" data-name="楕円形 18" class="cls-1" cx="28.45" cy="25.23" r="3.99"/>
+        <circle id="_楕円形_19" data-name="楕円形 19" class="cls-1" cx="16.85" cy="15.06" r="3.99"/>
+        <circle id="_楕円形_20" data-name="楕円形 20" class="cls-1" cx="11.68" cy="30.78" r="3.99"/>
+        <polygon class="cls-2" points="17.29 14.74 11.29 30.74 28.29 24.74 17.29 14.74"/>
+      </g>
+      <path class="cls-1" d="M35.77,0H4.36C1.96,0,0,1.95,0,4.35v37.14c0,2.4,1.96,4.35,4.36,4.35h19.99c8.7,0,15.78-7.08,15.78-15.78V4.35c0-2.4-1.96-4.35-4.36-4.35ZM37.13,30.06c0,7.05-5.73,12.78-12.78,12.78H4.36c-.75,0-1.36-.61-1.36-1.35V4.35c0-.74.61-1.35,1.36-1.35h31.41c.75,0,1.36.61,1.36,1.35v25.71Z"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Management</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/report.css">
+    <link rel="stylesheet" href="lib/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/icon/favicon.ico">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <script src="lib/jquery-3.6.0.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="lib/plotly.min.js"></script>
+    <script src="lib/lodash.min.js"></script>
+    <script src="lib/export/jszip.min.js"></script>
+    <script src="lib/export/pptxgen.min.js"></script>
+    <script src="js/common.js"></script>
+</head>
+
+<body class="unselectable">
+    <header class="header">
+        <div class="logo_container">
+            <div class="logo"></div>
+        </div>
+        <div class="header_content">
+            <div class="search_condition_container" id="search_condition_container">
+                <!-- title -->
+                <div class="title_container">
+                    <div class="page_title_container">
+                        <h1 class="page_title">REPORT</h1>
+                        <h2 class="sub_title" id="sub_title">View</h2>
+                        <div class="title_line"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="content_container">
+        <div class="page_menu">
+            <div class="page_menu_element type_management" id="type_management_page" title="Type Management Page"
+                onclick="checkForSave('/typeManagement', false)"></div>
+            <div class="page_menu_element graph_management" id="graph_management_page" title="Graph Management"
+                onclick="checkForSave('/graphManagement', false)"></div>
+            <div class="page_menu_element data_map" id="data_map_page" title="Data Map"
+                onclick="checkForSave('/dataMap', false)"></div>
+            <div class="page_menu_element report current_page" id="report_page" title="Report Management"
+                onclick="checkForSave('/report', false)"></div>
+            <div class="page_menu_element user_info" id="user_info" title="User info" style="display:none;"
+                onclick="location.href = '/admin'"></div>
+            <div class="page_menu_element log_out" id="log_out_page" title="Log Out" onclick="logout()"></div>
+        </div>
+        <div class="tab_menu">
+            <div class="tab_menu_element view_report current_tab current_page" id="view_report" title="View report"
+                onclick="checkForSave(false, 'view_report')"></div>
+            <div class="tab_menu_element create_report" id="create_report" title="Create report"
+                onclick="checkForSave(false, 'create_report')"></div>
+            <div class="tab_menu_element edit_report" id="edit_report" title="Edit report"
+                onclick="checkForSave(false, 'edit_report')"></div>
+            <div class="tab_menu_element delete_report" id="delete_report" title="Delete report"
+                onclick="checkForSave(false, 'delete_report')"></div>
+        </div>
+        <div class="sub_menu">
+            <div class="sub_menu_button property_column_button" id="search_reports_button"
+                onclick="openReportSearchPopup()">
+                Search Reports</div>
+            <div class="sub_menu_display" id="report_id_display"></div>
+            <div class="sub_menu_button property_column_button" id="search_nodes_button"
+                onclick="openNodeSearchPopup()">
+                Search Nodes</div>
+            <div class="sub_menu_button node_list_item node_list_item_draggable" id="add_report_element_button">Add Text
+            </div>
+            <div class="node_list" id="node_list"></div>
+            <div class="sub_menu_button property_column_button" id="select_container_button"
+                onclick="openSelectContainerPopup()">
+                Contained by</div>
+            <div class="sub_menu_display" id="container_id_display_div"><span id="container_id_display"></span><span
+                    class="node_remove_report" id="container_remove" onclick="removeContainerDisplay()"></span></div>
+            <div class="sub_menu_button property_column_button" id="save_report_button" onclick="saveReport()">Save
+                Report</div>
+            <div class="sub_menu_button property_column_button" id="edit_report_button" onclick="editReport()">Edit
+                Report</div>
+            <div class="sub_menu_button property_column_button" id="export_report_button" onclick="exportReport()">Export
+                Report</div>  
+            <div class="sub_menu_button property_column_button" id="delete_report_button" onclick="deleteReport()">
+                Delete
+                Report</div>
+        </div>
+        <div class="content" id="content">
+            <div class="report_content" id="report_content"></div>
+        </div>
+        <!-- REPORT SEARCH POPUP -->
+        <div class="popup_container" id="report_search_popup_container">
+            <div class="popup_background" onclick="closePopup('report_search')"></div>
+            <div class="popup">
+                <div class="popup_close_button" onclick="closePopup('report_search')"></div>
+                <div class="popup_content" id="report_search_popup_content">
+                    <div class="report_search_popup_properties" id="report_search_popup_properties">
+                        <div class="popup_title">Search Reports</div>
+                        <div class="popup_file_search_container">
+                            <div class="form_container" id="hard_coded_conditions">
+                                <div class="popup_property_element">
+                                    <label for="report_created_by">createdBy</label>
+                                    <input type="text" id="report_created_by" autocomplete="off">
+                                </div>
+                                <div class="popup_property_element">
+                                    <label for="report_contained_by">containedBy</label>
+                                    <input type="text" id="report_contained_by" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form_container" id="report_search_popup_property_container"></div>
+                            <div class="button_container">
+                                <div class="popup_search_button" onclick="populateReportSearchPopupList()">Search
+                                    reports</div>
+                                <div class="popup_search_button" onclick="resetPopup('report_search')">Reset</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file_list_container">
+                        <div class="popup_title">Reports List</div>
+                        <div class="popup_nodes_list" id="report_search_popup_nodes_list"></div>
+                    </div>
+                </div>
+                <div class="popup_button_container">
+                    <div class="popup_button" onclick="selectFromReportSearchPopup()">Select</div>
+                </div>
+            </div>
+        </div>
+        <!-- NODE SEARCH POPUP -->
+        <div class="popup_container" id="node_search_popup_container">
+            <div class="popup_background" onclick="closePopup('node_search')"></div>
+            <div class="popup">
+                <div class="popup_close_button" onclick="closePopup('node_search')"></div>
+                <div class="popup_content" id="node_search_popup_content">
+                    <div class="node_search_popup_properties" id="node_search_popup_properties">
+                        <div class="popup_title">Search Nodes</div>
+                        <div class="popup_file_search_container">
+                            <div class="popup_property_element">
+                                <label for="node_search_popup_sub_type_select"
+                                    id="node_search_popup_sub_type_select_label">Sub Type</label>
+                                <select id="node_search_popup_sub_type_select" class="select_style"
+                                    onchange="populateSubTypeProperties(event.target.value, 'node_search')">
+                                </select>
+                            </div>
+                            <div id="node_search_popup_property_container" class="form_container"></div>
+                            <div class="button_container">
+                                <div class="popup_search_button" onclick="populateSearchPopupList('node_search')">Search
+                                    nodes</div>
+                                <div class="popup_search_button" onclick="resetPopup('node_search')">Reset</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file_list_container">
+                        <div class="popup_title">Nodes List</div>
+                        <div class="popup_nodes_list" id="node_search_popup_nodes_list"></div>
+                    </div>
+                </div>
+                <div class="popup_button_container">
+                    <div class="popup_button" onclick="selectFromNodeSearchPopup()">Select</div>
+                </div>
+            </div>
+        </div>
+        <!-- CONTAINER SELECT POPUP -->
+        <div class="popup_container" id="container_select_popup_container">
+            <div class="popup_background" onclick="closePopup('container_select')"></div>
+            <div class="popup">
+                <div class="popup_close_button" onclick="closePopup('container_select')"></div>
+                <div class="popup_content" id="container_select_popup_content">
+                    <div class="container_select_popup_properties" id="container_select_popup_properties">
+                        <div class="popup_title">Search Containers</div>
+                        <div class="popup_file_search_container">
+                            <div class="popup_property_element">
+                                <label for="container_select_popup_sub_type_select"
+                                    id="container_select_popup_sub_type_select_label">Sub Type</label>
+                                <select id="container_select_popup_sub_type_select" class="select_style"
+                                    onchange="populateSubTypeProperties(event.target.value, 'container_select')">
+                                </select>
+                            </div>
+                            <div id="container_select_popup_property_container" class="form_container"></div>
+                            <div class="button_container">
+                                <div class="popup_search_button" onclick="populateSearchPopupList('container_select')">
+                                    Search containers</div>
+                                <div class="popup_search_button" onclick="resetPopup('container_select')">Reset</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="file_list_container">
+                        <div class="popup_title">Containers List</div>
+                        <div class="popup_nodes_list" id="container_select_popup_nodes_list"></div>
+                    </div>
+                </div>
+                <div class="popup_button_container">
+                    <div class="popup_button" onclick="selectFromContainerSelectPopup()">Select</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/report.js"></script>
+</body>
+
+</html>

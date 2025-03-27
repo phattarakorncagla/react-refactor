@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="icon" href="img/icon/favicon.ico">
+    <script src="js/common.js"></script>
+</head>
+
+<body class="unselectable">
+    <header class="header">
+        <div class="logo_container">
+            <div class="logo"></div>
+        </div>
+        <div class="header_content">
+            <div class="search_condition_container" id="search_condition_container"></div>
+        </div>
+    </header>
+    <div class="content_container">
+        <div class="page_menu">
+            <div class="page_menu_element type_management" id="type_management_page"
+                title="Type Management Page" onclick="location.href = '/typeManagement'"></div>
+            <div class="page_menu_element graph_management" id="graph_management_page" title="Graph Management"
+                onclick="location.href = '/graphManagement'"></div>
+            <div class="page_menu_element data_map" id="data_map_page" title="Data Map"
+                onclick="location.href = '/dataMap'"></div>
+            <!-- <div class="page_menu_element report" id="report_page" title="Report Management"
+                onclick="location.href = '/report'"></div> -->
+            <div class="page_menu_element user_info current_page" id="user_info" title="User info" 
+                onclick="location.href = '/admin'"></div>        
+            <div class="page_menu_element log_out" id="log_out_page" title="Log Out" onclick="logout()"></div>
+        </div>
+        <div class="tab_menu">
+          <div class="tab_menu_element add_user current_tab current_page" id="add_user" title="Add User" onclick="Admin.changeToTab('add', true)"></div>
+          <div class="tab_menu_element role_editor" id="role_editor" title="Role Editor" onclick="Admin.changeToTab('role', true)"></div>
+          <div class="tab_menu_element division_editor" id="division_editor" title="Division Editor" onclick="Admin.changeToTab('division', true)"></div> 
+          <div class="tab_menu_element user_editor" id="user_editor" title="User List" onclick="Admin.changeToTab('user', true)"></div>
+        </div>
+      <div class="content column" id="content">
+          <!-- title start -->
+          <div class="title_container">
+              <div class="page_title_container">
+                  <h1 class="page_title">ADMIN</h1>
+                  <h2 id="sub_title" class="sub_title">ADD</h2>
+                  <div class="title_line"></div>
+              </div>
+          </div>
+          <!-- title end -->
+          <!-- bottom_container start -->
+          <!-- add tab -->
+          <div class="content_tab" id="add_tab" style="display: block;">
+              <div class="type_info_container primary_background">
+                <!-- a table to add users -->
+                 <div class="table_container">
+                <table class="type_info_table">
+                    <tr>
+                        <td class = "type_info_table_label">Email</td>
+                        <td class = "type_info_table_input"><input type="email" id="mail" class="type_info_table_input"></td>
+                    </tr>
+                    <tr>
+                        <td class="type_info_table_label">User Name</td>
+                        <td class="type_info_table_input"><input type="text" id="user_name" class="type_info_table_input"></td>
+                    </tr>
+                    <tr>
+                        <td class="type_info_table_label">Password</td>
+                        <td class="type_info_table_input"><input type="password" id="password" class="type_info_table_input"></td>
+                    </tr>
+                    <tr>
+                        <td class="type_info_table_label">Confirm Password</td>
+                        <td class="type_info_table_input"><input type="password" id="confirm_password" class="type_info_table_input"></td>
+                    </tr>
+                    <tr>
+                        <td class="type_info_table_label">Role</td>
+                        <td class="type_info_table_input">
+                          <select id="role_dropdown" class="type_info_table_input"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                      <td class="type_info_table_label">Division</td>
+                      <td class="type_info_table_input">
+                          <select id="division_dropdown" class="type_info_table_input"></select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="type_info_table_label"></td>
+                      <td class="type_info_table_input">
+                        <p>Admin</p>
+                        <input type="checkbox" id="admin" class="switch">
+                      </td>
+                    </tr>
+                    <!-- add/reset button -->
+                </table>
+                </div>
+                <div class="button_row">
+                    <div class="create_type_button" onclick="addNewUser()">Add User</div>
+                    <div class="create_type_button" onclick="resetUser()">Reset</div>
+                </div>
+              </div>
+          </div>
+          <!-- role editor -->
+          <div class="content_tab" id="role_tab" style="display: none;">
+              <div class="type_info_container primary_background">
+                <h2 id="sub_title" class="sub_title">Role Editor</h2>
+                <div class="table_container">
+                <!-- role editor table -->
+                 <table class="type_info_table">
+                    <tr>
+                        <th class="type_info_table_label">Role Name</th>
+                        <th class="type_info_table_label">Edit</th>
+                        <th class="type_info_table_label">Delete</th>
+                    </tr>
+                    <tbody id="role_table">
+                    </tbody>
+                </table>
+                </div>
+                <!-- Add role table -->
+                <h2 id="sub_title" class="sub_title">Add Role</h2>
+                <div class="table_container">
+                <table class="type_info_table">
+                    <tr>
+                        <td class = "type_info_table_label">Role Name</td>
+                        <td class = "type_info_table_input"><input type="text" id="role_name" class="type_info_table_input"></td>
+                    </tr>
+                    <!-- add/reset button -->
+                </table>
+                </div>
+                <div class="button_row">
+                    <div class="create_type_button" onclick="addNewRole()">Add Role</div>
+                    <div class="create_type_button" onclick="resetRole()">Reset</div>
+                </div>
+              </div>
+          </div>
+          <!-- division editor -->
+          <div class="content_tab" id="division_tab" style="display: none;">
+              <div class="type_info_container primary_background">
+                <h2 id="sub_title" class="sub_title">Division Editor</h2>
+                <div class="table_container">
+                <!-- division editor table -->
+                 <table class="type_info_table">
+                    <tr>
+                        <th class="type_info_table_label">Division Name</th>
+                        <th class="type_info_table_label">Edit</th>
+                        <th class="type_info_table_label">Delete</th>
+                    </tr>
+                    <tbody id="division_table">
+                    </tbody>
+                </table>
+                </div>
+                <div class="table_container">
+                <!-- Add division table -->
+                <table class="type_info_table">
+                    <tr>
+                        <td class = "type_info_table_label">Division Name</td>
+                        <td class = "type_info_table_input"><input type="text" id="division_name" class="type_info_table_input"></td>
+                    </tr>
+                    <!-- add/reset button -->
+                </table>
+                </div>
+                <div class="button_row">
+                    <div class="create_type_button" onclick="addNewDivision()">Add Division</div>
+                    <div class="create_type_button" onclick="resetDivision()">Reset</div>
+                </div>
+              </div>
+          </div>
+          <!-- user editor -->
+          <div class="content_tab" id="user_tab" style="display: none;">
+              <div class="type_info_container primary_background">
+                <!-- Add a div with a search bar, this search bar can be filtered with a dropdown -->
+                <div class="search_container">
+                      Search:
+                      <input type="text" id="user_search" class="search_input" oninput="searchUser()">
+                      <select id="user_filter" class="search_filter" onchange="searchUser()">
+                          <option value="email">Email</option>
+                          <option value="user_name">User Name</option>
+                          <option value="role">Role</option>
+                          <option value="division">Division</option>
+                      </select>
+                <!-- a table of users with a edit and delete button for each row-->
+                 <div class="table_container">
+                <table class="type_info_table">
+                    <tr>
+                        <th class="type_info_table_label">Email</th>
+                        <th class="type_info_table_label">User Name</th>
+                        <th class="type_info_table_label">Role</th>
+                        <th class="type_info_table_label">Division</th>
+                        <th class="type_info_table_label">Admin</th>
+                        <th class="type_info_table_label">Edit</th>
+                        <th class="type_info_table_label">Delete</th>
+                    </tr>
+                    <tbody id="user_table">
+                    </tbody>
+                </table> <!-- Added closing tag for table -->
+                </div>
+              <div class="type_properties primary_background"></div>
+          </div>
+          <!-- bottom_container end -->
+      </div>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Management</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/graphManagement.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link rel="icon" href="img/icon/favicon.ico">
+    <script src="js/common.js"></script>
+    <script src="lib/papaparse.min.js"></script>
+</head>
+
+<body id="graph_management_body" class="unselectable">
+    <header class="header">
+        <div class="logo_container">
+            <div class="logo"></div>
+        </div>
+        <div class="header_content">
+            <div class="search_condition_container" id="search_condition_container"></div>
+        </div>
+    </header>
+    <div class="content_container">
+        <div class="page_menu">
+            <div class="page_menu_element type_management" id="type_management_page" title="Type Management"
+                onclick="location.href = '/typeManagement'"></div>
+            <div class="page_menu_element graph_management current_page" id="graph_management_page"
+                title="Graph Management" onclick="location.href = '/graphManagement'"></div>
+            <div class="page_menu_element data_map" id="data_map_page" title="Data Map"
+                onclick="location.href = '/dataMap'"></div>
+            <!-- <div class="page_menu_element report" id="report_page" title="Report Management"
+                onclick="location.href = '/report'"></div> -->
+            <div class="page_menu_element user_info" id="user_info" title="User info" style="display:none;"
+                onclick="location.href = '/admin'"></div>
+            <div class="page_menu_element log_out" id="log_out_page" title="Log Out" onclick="logout()"></div>
+        </div>
+        <div class="tab_menu">
+            <div class="tab_menu_element csv_import current_tab current_page" id="csv_import"
+                title="Create dataset node" onclick="GraphManagement.changeToTab('csv_import', true)"></div>
+            <div class="tab_menu_element create_dataset" id="create_dataset"
+                title="Create dataset node" onclick="GraphManagement.changeToTab('create_dataset', true)"></div>
+            <!-- <div class="tab_menu_element duplicate_dataset" id="duplicate_dataset" title="Duplicate dataset node"
+                onclick="GraphManagement.changeToTab('duplicate_dataset', true)"></div> -->
+            <div class="tab_menu_element create_data" id="create_data" title="Create data node"
+                onclick="GraphManagement.changeToTab('create_data', true)"></div>
+            <div class="tab_menu_element edit_node" id="edit_node" title="Edit node"
+                onclick="GraphManagement.changeToTab('edit_node', true)"></div>
+            <div class="tab_menu_element delete_node" id="delete_node" title="Delete Node"
+                onclick="GraphManagement.changeToTab('delete_node', true)"></div> 
+            <div class="tab_menu_element node_access" id="node_access" title="Node Access"
+                onclick="GraphManagement.changeToTab('node_access', true)"></div>  
+            <div class="tab_menu_element create_edge" id="create_edge" title="Create edge"
+                onclick="GraphManagement.changeToTab('create_edge', true)"></div>
+            <div class="tab_menu_element delete_edge" id="delete_edge" title="Delete edge"
+                onclick="GraphManagement.changeToTab('delete_edge', true)"></div>
+        </div>
+        <div id="content" class="content column">
+            <!-- title -->
+            <div class="title_container">
+                <div class="page_title_container">
+                    <h1 class="page_title">GRAPH MANAGEMENT</h1>
+                    <h2 id="sub_title" class="sub_title">Create Dataset</h2>
+                    <div class="title_line"></div>
+                </div>
+            </div>
+            <!-- title end -->
+            <!-- CSV IMPORT -->
+            <div class="content_tab" id="csv_import_tab">
+              <div id="csv_template_container">
+                  <div class="csv_top_inner_container">
+                      <div class="execution_button popup_button" onclick="downloadCSVTemplate()">Download CSV Template</div>
+                  </div>
+                  <div 
+                      class="file_upload_drop_area" 
+                      id="upload_csv_file_upload_drop_area"
+                      ondrop="importCSV(event)"
+                      onclick="document.getElementById('file_input_upload_csv').click()"
+                  >
+                      CSV Drop Area
+                  </div>
+                  <input 
+                      type="file" 
+                      id="file_input_upload_csv" 
+                      style="display: none;" 
+                      onchange="importCSV(event)"
+                      accept=".csv"
+                  >
+              </div>
+
+              <div class="csv_bottom_inner_container" id="csv_template_file_name">
+                  <h2 id="sub_title" class="sub_title">Nodes for Creation</h2>
+                  <div id="created_csv_list"></div>
+              </div>
+
+              <div class="execution_button popup_button" id="upload_csv_button" onclick="uploadCSV()"style="display: none;">Upload CSV</div>
+            </div>
+            <!-- CREATE DATASET -->
+            <div class="content_tab" id="create_dataset_tab">
+                <div class="property_column">
+                    <div class="property_element">
+                        <label for="create_dataset_type_select">Dataset Type</label>
+                        <select id="create_dataset_type_select" class="select_style"
+                            onchange="datasetTypeChanged(event.target.value, 'create_dataset')"></select>
+                    </div>
+                    <div id="create_dataset_property_container"></div>
+                    <!-- Role selector, can choose multiple roles -->
+                    <div class="property_element">
+                        <div for="create_dataset_role_select">Role:</div>
+                        <div id="role_container"></div>
+                    </div>
+                    <div class="property_element">
+                        <div for="create_dataset_role_select">Division:</div>
+                        <div id="division_container"></div>
+                    </div>
+                    <div class="property_element_private_option">
+                        <label for="create_dataset_name">Private:</label>
+                        <input type="checkbox" id="private_checkbox">
+                    </div>
+                </div>
+
+                <div class="right_container">
+                    <!-- File Drop Area -->
+                    <div class="file_upload_drop_area" id="create_dataset_file_upload_drop_area"
+                        ondrop="filesDropped(event, 'create_dataset')"
+                        onclick="document.getElementById('file_input_create_dataset').click()"
+                    >
+                        File Drop Area
+                    </div>
+                    <input type="file" id="file_input_create_dataset" style="display: none;" multiple 
+                        onchange="handleFileInputChange(event, 'create_dataset')">
+
+                    <div class="right_bottom_container">
+                        <!-- Nodes Column -->
+                        <div class="nodes_column">
+                            <div class="label_button_container">
+                                <div class="list_label">Contained by</div>
+                                <div class="list_button popup_search_button"
+                                    onclick="openSelectionPopup('create_dataset_contains')">Add</div>
+                            </div>
+                            <div class="list_container" id="create_dataset_contains_nodes_list"></div>
+
+                            <div class="label_button_container">
+                                <div class="list_label">Descendant of</div>
+                                <div class="list_button popup_search_button" id="create_dataset_lineage_button"
+                                    onclick="openSelectionPopup('create_dataset_lineage')">Add</div>
+                            </div>
+                            <div class="list_container" id="create_dataset_lineage_nodes_list"></div>
+
+                        </div>
+                        <!-- Data Column -->
+                        <div class="data_column">
+                            <div class="label_button_container">
+                                <div class="list_label">New data</div>
+                            </div>
+                            <div class="list_container" id="create_dataset_new_data_list"></div>
+                            <div class="label_button_container">
+                                <div class="list_label">Existing data</div>
+                                <div class="list_button popup_search_button"
+                                    onclick="openSelectionPopup('create_dataset_data')">Add</div>
+                            </div>
+                            <div class="list_container" id="create_dataset_data_nodes_list"></div>
+
+                        </div>
+                    </div>
+
+                    <!-- Create Dataset Button -->
+                    <div class="execution_button_container">
+                        <div class="execution_button popup_button" onclick="createDataset('create_dataset')">Create
+                            Dataset</div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- DUPLICATE DATASET -->
+            <!-- <div class="content_tab" id="duplicate_dataset_tab">
+                <div class="property_column" id="duplicate_dataset_property_column_container">
+                    <div class="property_column" id="dataset_select_column">
+                        <div class="list_label">Duplicating</div>
+                        <div class="list_button popup_search_button" id="duplicate_dataset_duplicate_button"
+                            onclick="openSelectionPopup('duplicate_dataset_duplicate')">Add</div>
+                        <div class="list_container" id="duplicate_dataset_duplicate_nodes_list"></div>
+                    </div>
+                    <div class="property_column" id="duplicate_dataset_property_column">
+                        <div class="property_element" id="duplicate_dataset_type_select_container">
+                            <label for="duplicate_dataset_type_select">Dataset Type</label>
+                            <select id="duplicate_dataset_type_select"
+                                onchange="datasetTypeChanged(event.target.value, 'duplicate_dataset')"></select>
+                        </div>
+                        <div id="duplicate_dataset_property_container"></div>
+                    </div>
+
+                </div>
+                <div class="right_container"> -->
+                    <!-- File Drop Area -->
+                    <!-- <div class="file_upload_drop_area" id="duplicate_dataset_file_upload_drop_area"
+                        ondrop="filesDropped(event, 'duplicate_dataset')"
+                        onclick="document.getElementById('file_input_duplicate_dataset').click()"
+                    >
+                        File Drop Area
+                    </div>
+                    <input type="file" id="file_input_duplicate_dataset" style="display: none;" multiple 
+                    onchange="handleFileInputChange(event, 'duplicate_dataset')">
+                    <div class="right_bottom_container"> -->
+                        <!-- Nodes Column -->
+                        <!-- <div class="nodes_column">
+                            <div class="label_button_container">
+                                <div class="list_label">Contained by</div>
+                                <div class="list_button popup_search_button"
+                                    onclick="openSelectionPopup('duplicate_dataset_contains')">Add</div>
+                            </div>
+                            <div class="list_container" id="duplicate_dataset_contains_nodes_list"></div>
+                            <div class="label_button_container">
+                                <div class="list_label">Descendant of</div>
+                                <div class="list_button popup_search_button" id="duplicate_dataset_lineage_button"
+                                    onclick="openSelectionPopup('duplicate_dataset_lineage')">Add</div>
+                            </div>
+                            <div class="list_container" id="duplicate_dataset_lineage_nodes_list"></div>
+                        </div> -->
+                        <!-- Data Column -->
+                        <!-- <div class="data_column">
+                            <div class="label_button_container">
+                                <div class="list_label">New data</div>
+                            </div>
+                            <div class="list_container" id="duplicate_dataset_new_data_list"></div>
+                            <div class="label_button_container">
+                                <div class="list_label">Contains</div>
+                                <div class="list_button popup_search_button"
+                                    onclick="openSelectionPopup('duplicate_dataset_data')">Add</div>
+                            </div>
+                            <div class="list_container" id="duplicate_dataset_data_nodes_list"></div>
+                        </div>
+                    </div> -->
+                    <!-- Duplicate Dataset Button -->
+                    <!-- <div class="execution_button_container">
+                        <div class="execution_button popup_button" onclick="createDataset('duplicate_dataset')">
+                            Duplicate Dataset</div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- EDIT NODE -->
+            <div class="content_tab" id="edit_node_tab">
+                <div class="property_column" id="edit_node_property_column_container">
+                    <div class="property_column" id="node_select_column">
+                        <div class="list_label">Editing</div>
+                        <div class="list_button popup_search_button" id="edit_node_edit_button"
+                            onclick="openSelectionPopup('edit_dataset_edit')">Add
+                        </div>
+                        <select class="select_style" id="edit_node_edit_select" onchange="editSelector(event.target.value)">
+                            <option value="dataset">Dataset</option>
+                            <option value="data">Data</option>
+                        </select>
+                        <br></br>
+                        <div class="list_container" id="edit_node_edit_nodes_list"></div>
+                    </div>
+                    <div class="property_column" id="edit_node_property_column">
+                        <div class="property_element" id="edit_node_type_select_container">
+                            <label for="edit_node_type_select">Node Type</label>
+                            <select id="edit_node_type_select" onchange="datasetTypeChanged(event.target.value, 'edit_node')"></select>
+                        </div>
+                        <div id="edit_node_property_container"></div>
+                    </div>
+                </div>
+                <div class="right_container">
+                    <!-- File Drop Area -->
+                    <div class="file_upload_drop_area" id="edit_node_file_upload_drop_area"
+                        ondrop="filesDropped(event, 'edit_node')"
+                        onclick="document.getElementById('file_input_edit_node').click()"
+                    >
+                        File Drop Area
+                    </div>
+                    <input type="file" id="file_input_edit_node" style="display: none;" multiple 
+                        onchange="handleFileInputChange(event, 'edit_node')">
+                    <div class="right_bottom_container">
+                        <!-- Nodes Column -->
+                        <div class="nodes_column">
+                            <div class="label_button_container">
+                              <div class="list_label">Contained by</div>
+                              <div class="list_button popup_search_button" onclick="openSelectionPopup('edit_node_contains')">Add</div>
+                            </div>
+                            <div class="list_container" id="edit_node_contains_nodes_list"></div>
+                            <div class="label_button_container">
+                                <div class="list_label">Descendant of</div>
+                                <div class="list_button popup_search_button" id="edit_node_lineage_button" onclick="openSelectionPopup('edit_node_lineage')">Add</div>
+                            </div>
+                            <div class="list_container" id="edit_node_lineage_nodes_list"></div>
+                        </div>
+                        <div class="data_column">
+                            <div class="label_button_container">
+                                <div class="list_label">New data</div>
+                            </div>
+                            <div class="list_container" id="edit_node_new_data_list"></div>
+                            <div class="label_button_container">
+                                <div class="list_label">Contains</div>
+                                <div class="list_button popup_search_button" onclick="openSelectionPopup('edit_node_data')">Add</div>
+                            </div>
+                            <div class="list_container" id="edit_node_data_nodes_list"></div>
+                        </div>
+                    </div>
+                    <!-- Edit Node Button -->
+                    <div class="execution_button_container">
+                        <div class="execution_button popup_button" onclick="editNode()">Edit Node</div>
+                    </div>
+                </div>
+            </div>
+            <!-- NODE ACCESS -->
+            <div class="content_tab" id="node_access_tab">
+                <div class="type_info_container primary_background" id="node_access_property_column">
+                    <!-- Search bar -->
+                    <div class="search_bar" id="search_bar">
+                        Search:
+                        <input type="text" id="search_input" oninput="searchDatasetNodes()">
+                        <select id="search_select" onchange="searchDatasetNodes()">
+                            <option value="ID">ID</option>
+                            <option value="label">Label</option>
+                            <option value="createdBy">Created By</option>
+                            <option value="type">Type</option>
+                            <option value="role">Role</option>
+                            <option value="division">Division</option>
+                            <option value="private">Private</option>
+                        </select>
+                        <div id="current_user_id"></div>
+                    </div>
+                    <!-- Dataset nodes table -->
+                    <div class= "table_container">
+                    <table id="nodes_access_table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Label</th>
+                                <th>Created By</th>
+                                <th>Type</th>
+                                <th>Role</th>
+                                <th>Division</th>
+                                <th>Private</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="nodes_access_table_body"></tbody>
+                    </table>
+                </div>
+                </div>  
+            </div>
+            <!-- CREATE DATA -->
+            <div class="content_tab" id="create_data_tab">
+                <div class="file_upload_drop_area" id="create_data_file_upload_drop_area"
+                    ondrop="filesDropped(event, 'create_data')"
+                    onclick="document.getElementById('file_input_create_data').click()"
+                >
+                    File Drop Area
+                </div>
+                <input type="file" id="file_input_create_data" style="display: none;" multiple 
+                    onchange="handleFileInputChange(event, 'create_data')">
+                <div class="right_bottom_container">
+                    <div class="nodes_column" id="create_data_nodes_column">
+                        <div class="label_button_container">
+                            <div class="list_label">Contained by</div>
+                            <div class="list_button popup_search_button"
+                                onclick="openSelectionPopup('create_data_contains')">Add</div>
+                        </div>
+                        <div class="list_container" id="create_data_contains_nodes_list"></div>
+                        <div class="label_button_container">
+                            <div class="list_label">Descendant of</div>
+                            <div class="list_button popup_search_button" id="create_data_lineage_button"
+                                onclick="openSelectionPopup('create_data_lineage')">Add</div>
+                        </div>
+                        <div class="list_container" id="create_data_lineage_nodes_list"></div>
+                    </div>
+                    <div class="data_column" id="create_data_data_column">
+                        <div class="list_label">New data</div>
+                        <div class="list_container" id="create_data_new_data_list"></div>
+                    </div>
+                    <div class="nodes_column" id="create_data_access_column">
+                        <div class="list_label">Access</div>
+                        <div class="list_container" id="create_role_access_list">
+                            <div id="data_role_container"></div>
+                        </div>
+                        <div class="list_container" id="create_division_access_list">
+                            <div id="data_division_container"></div>
+                        </div>
+                        <div class="list_container" id="create_private_access_list">
+                            <div id="data_private_container">
+                                <label for="create_data_private">Private:</label>
+                                <input type="checkbox" id="create_data_private">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="execution_button_container" id="create_data_execution_button_container">
+                    <div class="execution_button popup_button" onclick="createData()">Create Data</div>
+                </div>
+            </div>
+            <!-- DELETE NODE -->
+            <div class="content_tab" id="delete_node_tab">
+                <div class="property_column" id="delete_node_property_column">
+                    <div class="popup_title">Search Nodes</div>
+                    <div class="property_element">
+                        <label for="delete_node_select">Type</label>
+                        <select id="delete_node_select" class="select_style"
+                            onchange="selectNodeType(event.target.value)"
+                        >
+                            <option value="dataset">Dataset</option>
+                            <option value="data">Data</option>
+                        </select>
+                        <label for="delete_node_type_select">Node Type</label>
+                        <select id="delete_node_type_select" class="select_style"></select>
+                    </div>
+                    <div id="delete_node_property_container"></div>
+                    <div class="property_column_button" id="delete_node_search_button">Search</div>
+                </div>
+                <div class="right_container">
+                    <div class="nodes_list_column" id="delete_node_nodes_list"></div>
+                    <div class="execution_button_container" id="delete_execution_button_container">
+                        <div class="execution_button popup_button" id="delete_node_button">Delete Node</div>
+                    </div>
+                </div>
+            </div>
+            <!-- CREATE EDGE -->
+            <div class="content_tab" id="create_edge_tab">
+                <div class="property_column" id="create_edge_property_column">
+                    <div class="popup_title">Search Nodes</div>
+                    <div class="property_element">
+                        <label for="create_edge_node_type_select">Node Type</label>
+                        <select id="create_edge_node_type_select" class="select_style"
+                            onchange="nodeTypeChanged(event.target.value, 'create_edge')">
+                            <option value="dataset">Dataset</option>
+                            <option value="data">Data</option>
+                        </select>
+                    </div>
+                    <div class="property_element" id="create_edge_type_select_container">
+                        <label for="create_edge_type_select" id="create_edge_type_select_label">Data Type</label>
+                        <select id="create_edge_type_select" class="select_style"
+                            onchange="subTypeChanged(event.target.value, 'create_edge')"></select>
+                    </div>
+                    <div id="create_edge_property_container"></div>
+                    <div class="property_column_button" onclick="populateNodesList('create_edge')">Search</div>
+                </div>
+                <div class="property_column" id="create_edge_nodes_list_column">
+                    <div class="nodes_list_column" id="create_edge_nodes_list"></div>
+                    <!-- Select Source and Select Destination button -->
+                    <div class="button_container">
+                        <div class="property_column_button" id="create_edge_select_source_button"
+                            onclick="selectEdgeNode('source', 'create_edge')">Select Source</div>
+                        <div class="property_column_button" id="create_edge_select_destination_button"
+                            onclick="selectEdgeNode('destination', 'create_edge')">Select Destination</div>
+                    </div>
+                </div>
+                <div class="property_column" id="create_edge_edge_column">
+                    <div class="property_element">
+                        <label for="create_edge_edge_type_select">Edge Type</label>
+                        <select id="create_edge_edge_type_select"
+                            onchange="edgeTypeChanged(event.target.value, 'create_edge')">
+                            <option value="CONTAINS">Contains</option>
+                            <option value="LINEAGE">Lineage</option>
+                        </select>
+                    </div>
+                    <div class="property_element">
+                        <label for="create_edge_source">Source Node</label>
+                        <input id="create_edge_source" disabled>
+                        <div class="edge_node_remove" id="create_edge_source_remove"
+                            onclick="removeEdgeInput('source', 'create_edge')"></div>
+                    </div>
+                    <div class="property_element">
+                        <label for="create_edge_destination">Destination Node</label>
+                        <input id="create_edge_destination" disabled>
+                        <div class="edge_node_remove" id="create_edge_destination_remove"
+                            onclick="removeEdgeInput('destination', 'create_edge')"></div>
+                    </div>
+                    <div class="popup_button" onclick="createEdge()">Create Edge</div>
+                </div>
+            </div>
+            <!-- DELETE EDGE -->
+            <div class="content_tab" id="delete_edge_tab">
+                <div class="property_column" id="delete_edge_property_column">
+                    <div class="popup_title">Search Nodes</div>
+                    <div class="property_element">
+                        <label for="delete_edge_node_type_select">Node Type</label>
+                        <select id="delete_edge_node_type_select" class="select_style"
+                            onchange="nodeTypeChanged(event.target.value, 'delete_edge')">
+                            <option value="dataset">Dataset</option>
+                            <option value="data">Data</option>
+                        </select>
+                    </div>
+                    <div class="property_element" id="delete_edge_type_select_container">
+                        <label for="delete_edge_type_select" id="delete_edge_type_select_label">Data Type</label>
+                        <select id="delete_edge_type_select" class="select_style"
+                            onchange="subTypeChanged(event.target.value, 'delete_edge')"></select>
+                    </div>
+                    <div id="delete_edge_property_container"></div>
+                    <div class="property_column_button" onclick="populateNodesList('delete_edge')">Search</div>
+                </div>
+                <div class="property_column" id="delete_edge_nodes_list_column">
+                    <div class="nodes_list_column" id="delete_edge_nodes_list"></div>
+                    <div class="button_container">
+                        <div class="property_column_button" id="delete_edge_select_source_button"
+                            onclick="selectEdgeNode('source', 'delete_edge')">Select Source</div>
+                        <div class="property_column_button" id="delete_edge_select_destination_button"
+                            onclick="selectEdgeNode('destination', 'delete_edge')">Select Destination</div>
+                    </div>
+                </div>
+                <div class="property_column" id="delete_edge_edge_column">
+                    <div class="property_element">
+                        <label for="delete_edge_source">Edge Id</label>
+                        <input id="delete_edge_id">
+                    </div>
+                    -OR-
+                    <div class="property_element">
+                        <label for="delete_edge_edge_type_select">Edge Type</label>
+                        <select id="delete_edge_edge_type_select"
+                            onchange="edgeTypeChanged(event.target.value, 'delete_edge')">
+                            <option value="CONTAINS">Contains</option>
+                            <option value="LINEAGE">Lineage</option>
+                        </select>
+                    </div>
+                    <div class="property_element">
+                        <label for="delete_edge_source">Source Node</label>
+                        <input id="delete_edge_source" disabled>
+                        <div class="edge_node_remove" id="delete_edge_source_remove"
+                            onclick="removeEdgeInput('source', 'delete_edge')"></div>
+                    </div>
+                    <div class="property_element">
+                        <label for="delete_edge_destination">Destination Node</label>
+                        <input id="delete_edge_destination" disabled>
+                        <div class="edge_node_remove" id="delete_edge_destination_remove"
+                            onclick="removeEdgeInput('destination', 'delete_edge')"></div>
+                    </div>
+                    <div class="popup_button" onclick="deleteEdge()">Delete Edge</div>
+                </div>
+            </div>
+            <!-- POPUPS -->
+            <div class="popup_container" id="node_selection_popup_container">
+                <div class="popup_background" onclick="closePopup('node_selection')"></div>
+                <div class="popup">
+                    <div class="popup_close_button" onclick="closePopup('node_selection')"></div>
+                    <div class="popup_content" id="node_selection_popup_content">
+                        <div class="node_selection_popup_properties" id="node_selection_popup_properties">
+                            <div class="popup_title">Search Nodes</div>
+                            <div class="popup_file_search_container">
+                                <div class="popup_property_element">
+                                    <label for="node_selection_popup_type_select"
+                                        id="node_selection_popup_type_select_label">Dataset Type</label>
+                                    <select id="type_selection_popup_type_select" class="select_style"
+                                        onchange="popupTypeChange()"
+                                    >
+                                        <option value="dataset">Dataset</option>
+                                        <option value="data">Data</option>
+                                    </select>
+                                    <select id="node_selection_popup_type_select" class="select_style"
+                                        onchange="typeSelectChanged(event.target.value, 'node_selection_popup')"></select>
+                                </div>
+                                <div id="node_selection_popup_property_container" class="form_container"></div>
+                                <div class="button_container">
+                                    <div class="popup_search_button"
+                                        onclick="populateSelectionPopupList('node_selection_popup')">Search nodes</div>
+                                    <div class="popup_search_button" onclick="resetPopup()">Reset</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file_list_container">
+                            <div class="popup_title">Nodes List</div>
+                            <div class="popup_nodes_list" id="node_selection_popup_nodes_list"></div>
+                        </div>
+                    </div>
+                    <div class="popup_button_container">
+                        <div class="popup_button" onclick="selectFromPopup()">Select</div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_container" id="set_properties_popup_container">
+                <div class="popup_background" onclick="closePopup('set_properties')"></div>
+                <div class="popup">
+                    <div class="popup_close_button" onclick="closePopup('set_properties')"></div>
+                    <div class="popup_content" id="set_properties_popup_content">
+                        <div class="set_properties_popup_properties" id="set_properties_popup_properties">
+                            <div class="popup_title">Property</div>
+                            <div class="popup_file_search_container">
+                                <div class="popup_property_element">
+                                    <label for="set_properties_popup_type_select"
+                                        id="set_properties_popup_type_select_label">Data Type</label>
+                                    <select id="set_properties_popup_type_select" class="select_style"
+                                        onchange="getTypeProperties(event.target.value, 'set_properties_popup', false)"></select>
+                                </div>
+                                <div id="set_properties_popup_property_container" class="form_container"></div>
+                                <div class="button_container">
+                                    <div class="popup_search_button" onclick="setPropertiesForSelectedFiles()">Apply
+                                    </div>
+                                    <div class="popup_search_button" onclick="removeSelectedFiles()">Ignore</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file_list_container">
+                            <div class="popup_title">Files List</div>
+                            <div class="radio_container">
+                                <input type="radio" name="sorting_method" id="name_sorting"
+                                    onchange="populateSetPropertiesPopup('name', 'set_properties')" checked>
+                                <label for="name_sorting">By name</label>
+                                <input type="radio" name="sorting_method" id="type_sorting"
+                                    onchange="populateSetPropertiesPopup('type', 'set_properties')">
+                                <label for="type_sorting">By type</label>
+                            </div>
+                            <div class="popup_nodes_list" id="set_properties_popup_nodes_list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup_container" id="loading_container">
+                <div class="popup_background"></div>
+                <div class="popup loading">
+                    <div class="popup_content" id="loading_popup_content">
+                        <label for="loading_progress" id="loading_progress_file_name"></label>
+                        <progress id="loading_progress" value="0" max="100"></progress>
+                        <label for="loading_progress"><span id="current_chunk">0</span> of <span id="total_chunks">0</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/fileUpload.js"></script>
+    <script src="js/graphManagement.js"></script>
+</body>
+
+</html>

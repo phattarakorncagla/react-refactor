@@ -1,0 +1,1552 @@
+@import url("thema.css");
+
+/* ------------------ 全体の設定 ------------------- */
+
+*,
+*::before,
+*::after {
+    font-family: var(--sub-font);
+    box-sizing: border-box;
+}
+
+/* htmlのフォントサイズ100%にすると、ユーザーのフォントサイズ設定を反映できる */
+html {
+    font-size: 100%;
+    width: 100%;
+    height: 100vh;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    min-height: 768px;
+    min-width: 1024px;
+    margin: 0px;
+    overflow: hidden;
+    background: center center / cover no-repeat url("../img/bg/background.png");
+}
+
+.placeholder {
+    font-size: var(--font-size1);
+    font-weight: normal;
+}
+
+/* form style reset */
+
+input:not([type="radio"], [type="checkbox"]),
+button,
+textarea,
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: var(--fifth-color-thin2);
+    letter-spacing: .05em;
+    transition: all .3s ease;
+}
+
+input {
+    border: none;
+}
+
+input:-webkit-autofill {
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+
+input:not([type="radio"], [type="checkbox"]),
+textarea,
+select {
+    opacity: .9;
+    border-radius: .3rem;
+    box-shadow: var(--shadow12);
+    transition: all .3s ease;
+}
+
+input:not([type="radio"], [type="checkbox"]):hover,
+textarea:hover,
+select:hover,
+input:not([type="radio"], [type="checkbox"]):active,
+textarea:active,
+select:active {
+    opacity: .95;
+    border-radius: .3rem;
+    box-shadow: var(--shadow10);
+    transition: all .3s ease;
+}
+
+input[type="radio"]:hover,
+input[type="radio"]:active,
+input[type="checkbox"]:hover,
+input[type="checkbox"]:active {
+    opacity: .95;
+    border-radius: .3rem;
+    filter: drop-shadow(var(--shadow1));
+    transition: all .3s ease;
+}
+
+label,
+.list_label {
+    letter-spacing: .05em;
+    white-space: nowrap;
+}
+
+.select_style {
+    font-size: var(--font-size2);
+    width: 100%;
+    padding: .5rem;
+    position: relative;
+}
+
+/*========= Ripples button (クリックしたら波紋が広がるボタン) start =========*/
+
+.popup_button_container {
+    height: 90px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup_button {
+    /*波紋の基点とするためrelativeを指定*/
+    position: relative;
+    /*はみ出す波紋を隠す*/
+    overflow: hidden;
+    /*ボタンの形状*/
+    text-decoration: none;
+    display: inline-block;
+    background: var(--primary-color);
+    outline: none;
+    color: var(--fifth-color);
+    padding: 1em 5em;
+    border-radius: 0px;
+    font-family: var(--sub-font);
+    font-weight: bold;
+    font-size: var(--font-size2);
+    text-align: center;
+    letter-spacing: .05em;
+    text-shadow: var(--shadow1), var(--shadow1);
+}
+
+.popup_button::after {
+    content: "";
+    /*絶対配置で波紋位置を決める*/
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    /*波紋の形状*/
+    background: radial-gradient(circle, var(--primary-color) 10%, transparent 10%) no-repeat 50%;
+    transform: scale(10, 10);
+    /*はじめは透過0に*/
+    opacity: 0;
+    /*アニメーションの設定*/
+    transition: transform 0.3s, opacity 1s;
+}
+
+.popup_button:hover {
+    background: var(--fifth-color);
+    color: var(--fourth-color);
+    outline: 2px solid var(--primary-color-opacity1);
+    text-shadow: var(--shadow1), var(--shadow1), var(--shadow10), var(--shadow10);
+    box-shadow: var(--shadow9), var(--shadow11), var(--shadow10);
+    transition: opacity .3s ease;
+}
+
+.popup_button::after:hover {
+    background: black;
+    background: radial-gradient(circle, black 10%, transparent 10%) no-repeat 50%;
+}
+
+/*クリックされたあとの形状の設定*/
+.popup_button:active::after {
+    transform: scale(0, 0);
+    transition: 0s;
+    opacity: 0.3;
+}
+
+.popup_button:not(:first-child) {
+    margin-left: 3%;
+}
+
+.property_column>.popup_button {
+    margin-top: auto;
+    margin-left: 0;
+    padding: 1em 2em;
+}
+
+/* サブのボタンは、色をグレーにする */
+.sub_color {
+    background-color: var(--fifth-color-thin5);
+    text-shadow: none;
+    padding-left: 3em;
+    padding-right: 3em;
+}
+
+/*========= Ripples button (クリックしたら波紋が広がるボタン) end =========*/
+
+/*========= Sub button (サブのボタン) start =========*/
+
+.button_container {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    height: auto;
+    margin-top: 1rem;
+}
+
+.popup_search_button,
+.property_column_button,
+.create_type_button,
+.add_property_button,
+.edit_type_button,
+.delete_type_button {
+    height: auto;
+    width: auto;
+    padding: .7em 2em;
+    box-sizing: border-box;
+    font-weight: bold;
+    letter-spacing: .05em;
+    font-size: var(--font-size1);
+
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* white-space: nowrap; */
+}
+
+.button_container>div:first-child {
+    margin-right: 1em;
+}
+
+.button_container>div:first-child,
+.property_column_button,
+.create_type_button,
+.add_property_button,
+.edit_type_button,
+.delete_type_button {
+    background-color: var(--primary-color-opacity4);
+}
+
+.button_container>div:last-child {
+    background-color: var(--fourth-color-opacity1);
+}
+
+.button_container>div:first-child:hover,
+.button_container>div:last-child:hover,
+.list_button.popup_search_button:hover,
+.property_column_button:hover,
+.create_type_button:hover,
+.add_property_button:hover,
+.edit_type_button:hover,
+.delete_type_button:hover {
+    background-color: var(--fourth-color);
+    /* color: var(--fifth-color); */
+    color: var(--fifth-color) !important;
+    text-shadow: var(--shadow1);
+    box-shadow: var(--shadow10);
+    transition: all .3s ease;
+}
+
+.create_type_button,
+.edit_type_button,
+.delete_type_button {
+    padding: 1em 1.5em;
+}
+
+.add_property_button,
+.delete_type_button {
+    display: inline-block;
+    margin-bottom: 1em;
+    margin-right: auto;
+    padding: 1em 5em;
+}
+
+/*========= Sub button (サブのボタン) end =========*/
+
+
+/* ページタイトル DATA MAP start =================*/
+
+.title_container {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 2em;
+}
+
+.page_title_container {
+    position: relative;
+    padding: 0 3rem 0 .5rem;
+}
+
+.page_title,
+.page_title::before,
+.page_title::after {
+    width: auto;
+    height: auto;
+    font-size: var(--font-size4);
+    line-height: 1;
+    font-weight: 600;
+    font-family: var(--title-font);
+    color: var(--fourth-color);
+    text-shadow: var(--shadow1);
+    letter-spacing: .2rem;
+}
+
+.page_title,
+.sub_title {
+    display: inline-block;
+    margin: 0;
+}
+
+.page_title {
+    position: relative;
+    left: 0;
+    margin: 0;
+    padding-right: 1em;
+}
+
+.page_title::before,
+.page_title::after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+
+/* タイトルの語句は、各ページのCSSで指定しています！ */
+
+.page_title::before {
+    top: .3rem;
+    opacity: .3;
+}
+
+.page_title::after {
+    top: .6rem;
+    opacity: .2;
+}
+
+.title_line {
+    position: relative;
+    left: -.5em;
+    bottom: 0;
+    width: calc(110%);
+    height: .5rem;
+    border-radius: 50%;
+    background: top left / cover no-repeat var(--secondary-color-opacity2);
+    margin-top: -.45rem;
+}
+
+.title_line::before,
+.title_line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: .5rem;
+    border-radius: 50%;
+}
+
+.title_line::before {
+    background: top left / cover no-repeat var(--secondary-color-opacity3);
+    top: .2em;
+    width: 90%;
+}
+
+.title_line::after {
+    background: top left / cover no-repeat var(--secondary-color-opacity4);
+    top: .4em;
+    width: 80%;
+}
+
+.sub_title {
+    font-family: var(--title-font);
+    font-weight: normal;
+    letter-spacing: .1em;
+    text-shadow: var(--shadow1);
+    position: relative;
+    text-transform: capitalize;
+    color: var(--fourth-color);
+}
+
+.sub_title::before,
+.sub_title::after {
+    content: "";
+    display: inline-block;
+    width: .8em;
+    height: 1px;
+    border-top: 1px solid var(--fourth-color-opacity3);
+    position: absolute;
+    top: 50%;
+    box-shadow: var(--shadow1);
+}
+
+.sub_title::before {
+    left: -.2em;
+    transform: translateX(-100%);
+}
+
+.sub_title::after {
+    right: -.2em;
+    transform: translateX(100%);
+}
+
+
+
+/* ページタイトル end =================*/
+
+/* タイトル部より下（内容）start =================*/
+.bottom_container {
+    flex: 1;
+}
+
+/* タイトル部より下（内容）end =================*/
+
+
+/* ------------------ header等の設定 ------------------- */
+
+/* --------header-------- */
+.header {
+    height: var(--header-height);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    background: var(--header-gradient);
+    box-shadow: var(--shadow4);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.logo_container {
+    height: 100%;
+    width: var(--logo-width);
+    background-color: var(--fifth-color-thin3);
+    display: flex;
+    align-items: center;
+    padding-block: 0.4rem;
+    box-shadow: var(--shadow6);
+    z-index: 10;
+}
+
+.logo {
+    height: 100%;
+    width: 80%;
+    margin: auto;
+    background: center center / contain url("../img/logo.png") no-repeat;
+}
+
+.header_content {
+    height: 100%;
+    flex: 1 1 0;
+    border-bottom: 1px solid var(--fourth-color-opacity1);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.search_button,
+.back_button {
+    width: var(--header-height);
+    height: 100%;
+    background: center center / cover no-repeat;
+    background-color: var(--primary-color-opacity1);
+    transition: all .2s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.search_button {
+    background-image: url("../img/btn/search_btn.svg");
+}
+
+.back_button {
+    display: none;
+    background-image: url("../img/btn/back_btn.svg");
+}
+
+.search_button:hover,
+.back_button:hover {
+    transition: all .2s ease, filter .2s ease;
+}
+
+.search_button:hover {
+    background-image: url("../img/btn/search_btn_current.svg");
+}
+
+.back_button:hover {
+    background-image: url("../img/btn/back_btn_current.svg");
+}
+
+.search_condition_container {
+    height: 100%;
+    flex: 1 1 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: var(--header-gradient);
+    overflow-x: scroll;
+}
+
+.search_condition_name {
+    text-shadow: var(--shadow3);
+    padding-top: .3em;
+}
+
+.search_condition_container::-webkit-scrollbar {
+    display: none;
+}
+
+.search_condition {
+    height: 100%;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 2em;
+    letter-spacing: .05rem;
+    color: var(--fourth-color);
+    transition: all .3s ease;
+    white-space: nowrap;
+    border-right: 1px solid var(--fourth-color-opacity1);
+}
+
+.search_condition_name {
+    font-size: var(--font-size8);
+    line-height: 1.5;
+    padding-right: .5rem;
+}
+
+.search_condition_value {
+    font-size: var(--font-size2);
+    color: var(--fourth-color);
+}
+
+/* --------header end------------------------------- */
+
+/* --------menu and content------------------------- */
+.content_container {
+    height: 100%;
+    height: calc(100% - var(--header-height));
+    width: 100%;
+    display: flex;
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+}
+
+/* --------page menu , task menu-------- */
+.page_menu,
+.tab_menu {
+    height: calc(100vh - var(--header-height));
+    width: var(--menu-width);
+    max-width: var(--menu-max-width);
+    background-color: var(--primary-color-opacity2);
+    box-shadow: var(--shadow8);
+    border-right: 1px solid var(--fifth-color-opacity1);
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    /* IE, Edge 対応 */
+    scrollbar-width: none;
+}
+
+.page_menu::-webkit-scrollbar,
+.tab_menu::-webkit-scrollbar {
+    /* Chrome, Safari 対応 */
+    display: none;
+}
+
+.tab_menu {
+    background-color: var(--primary-color-opacity3);
+}
+
+.page_menu_element,
+.tab_menu_element {
+    height: var(--menu-width);
+    max-height: var(--menu-max-width);
+    width: 100%;
+    line-height: 1;
+    border-bottom: 1px solid var(--fourth-color-opacity1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-size12);
+    padding: max(0.4em, 5%);
+    text-align: center;
+    color: var(--fourth-color);
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    background-position: center max(0.4em, 20%);
+    overflow: hidden;
+    position: relative;
+    transition: all .3 ease;
+}
+
+.page_menu_element::after,
+.tab_menu_element::after,
+.user_info {
+    display: block;
+    margin-top: calc(100% - 1em - max(0.4em, 20%));
+    padding: 0 .2em;
+    position: relative;
+    white-space: pre-wrap;
+}
+
+.page_menu_element:hover,
+.tab_menu_element:hover {
+    filter: saturate(150%);
+    background-size: 55% 55%;
+    background-color: var(--primary-color-opacity2);
+    color: var(--fourth-color);
+    transition: all .3 ease;
+}
+
+/* 背景の丸 */
+.page_menu_element::before,
+.tab_menu_element::before {
+    content: "";
+    display: block;
+    border-radius: 50%;
+    position: absolute;
+    top: 20%;
+    transform: scale(100%);
+    z-index: -1;
+    width: calc(var(--menu-width) * .6);
+    height: calc(var(--menu-width) * .6);
+    transition: scale 0.3s ease;
+}
+
+.user_info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin: 0;
+    padding-top: max(0.4em, 5%);
+    padding-bottom: max(0.4em, 15%);
+}
+.userInfo::before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: scale(100%) translate(-50%, -50%);
+}
+
+.page_menu_element:hover::before,
+.tab_menu_element:hover::before {
+    background-color: var(--primary-color-opacity2);
+    /* width: calc(var(--menu-width) * .7);
+    height: calc(var(--menu-width) * .7); */
+    background-image: var(--hover-gradient);
+    transform: scale(150%);
+    transition: 0.2s transform ease;
+}
+
+
+.type_management {
+    background-image: url("../img/btn/type_management_btn.svg");
+}
+
+.type_management::after {
+    content: "Type\A Management";
+}
+
+.type_management.current_page {
+    background-image: url("../img/btn/type_management_btn_current.svg");
+}
+
+.graph_management {
+    background-image: url("../img/btn/graph_management_btn.svg");
+}
+
+.graph_management::after {
+    content: "Graph\A Management";
+}
+
+.graph_management.current_page {
+    background-image: url("../img/btn/graph_management_btn_current.svg");
+}
+
+.data_map {
+    background-image: url("../img/btn/data_map_btn.svg");
+}
+
+.data_map::after {
+    content: "Data Map";
+}
+
+.data_map.current_page {
+    background-image: url("../img/btn/data_map_btn_current.svg");
+}
+
+.report {
+    background-image: url("../img/btn/report_btn.svg");
+}
+
+.report::after {
+    content: "Report";
+}
+
+.report.current_page {
+    background-image: url("../img/btn/report_btn_current.svg");
+}
+
+.user_info {
+    background-image: url("../img/btn/user_btn.svg");
+}
+
+.user_info.current_page {
+    background-image: url("../img/btn/user_btn_current.svg");
+}
+
+.user_info::after {
+    content: "Admin";
+}
+
+.log_out {
+    background-image: url("../img/btn/log_out_btn.svg");
+}
+
+.log_out::after {
+    content: "Log Out";
+}
+
+.log_out.current_page {
+    background-image: url("../img/btn/log_out_btn_current.svg");
+}
+
+.settings {
+    background-image: url("../img/btn/settings_btn.svg");
+}
+
+.settings::after {
+    content: "Settings";
+}
+
+.settings.current_page {
+    background-image: url("../img/btn/settings_btn_current.svg");
+}
+
+/* Type Magangement's tab menu ==========*/
+.create_type {
+    background-image: url("../img/btn/tm_create_btn.svg");
+}
+
+.create_type::after {
+    content: "Create Type";
+}
+
+.create_type.current_page {
+    background-image: url("../img/btn/tm_create_btn_current.svg");
+}
+
+.edit_type {
+    background-image: url("../img/btn/tm_edit_btn.svg");
+    background-position: 65% 30%;
+}
+
+.edit_type::after {
+    content: "Edit Type";
+}
+
+.edit_type.current_page {
+    background-image: url("../img/btn/tm_edit_btn_current.svg");
+}
+
+.delete_type {
+    background-image: url("../img/btn/tm_delete_btn.svg");
+}
+
+.delete_type::after {
+    content: "Delete Type";
+}
+
+.delete_type.current_page {
+    background-image: url("../img/btn/tm_delete_btn_current.svg");
+}
+
+/* User Info (ユーザー名の文字を少し下にずらす) */
+/* .page_menu_element.user_info {
+    padding-bottom: 1.3vh;
+} */
+
+/* Graph Magangement's tab menu ==========*/
+
+.csv_import {
+    background-image: url("../img/btn/gm_import_cvs_btn.svg");
+}
+
+.csv_import.current_page{
+    background-image: url("../img/btn/gm_import_cvs_btn_current.svg");
+}
+
+.csv_import::after {
+    content: "CSV Import";
+}
+
+.create_dataset {
+    background-image: url("../img/btn/gm_create_dataset_btn.svg");
+}
+
+.create_dataset::after {
+    content: "Create\A Dataset";
+}
+
+.create_dataset.current_page {
+    background-image: url("../img/btn/gm_create_dataset_btn_current.svg");
+}
+
+.duplicate_dataset {
+    background-image: url("../img/btn/gm_duplicate_dataset_btn.svg");
+}
+
+.duplicate_dataset::after {
+    content: "Duplicate\A Dataset";
+}
+
+.duplicate_dataset.current_page {
+    background-image: url("../img/btn/gm_duplicate_dataset_btn_current.svg");
+}
+
+.edit_dataset {
+    background-image: url("../img/btn/gm_edit_dataset_btn.svg");
+}
+
+.edit_dataset::after {
+    content: "Edit Dataset";
+}
+
+.edit_dataset.current_page {
+    background-image: url("../img/btn/gm_edit_dataset_btn_current.svg");
+}
+
+.create_data {
+    background-image: url("../img/btn/gm_create_data_btn.svg");
+}
+
+.create_data::after {
+    content: "Create Data";
+}
+
+.create_data.current_page {
+    background-image: url("../img/btn/gm_create_data_btn_current.svg");
+}
+
+.edit_node {
+    background-image: url("../img/btn/gm_edit_dataset_btn.svg");
+}
+
+.edit_node::after {
+  content: "Edit Node";
+}
+
+.edit_node.current_page {
+    background-image: url("../img/btn/gm_edit_dataset_btn_current.svg");
+}
+
+.delete_node {
+  background-image: url("../img/btn/gm_delete_dataset_btn.svg");
+}
+
+.delete_node::after {
+    content: "Delete Node";
+}
+
+.delete_node.current_page {
+    background-image: url("../img/btn/gm_delete_dataset_btn_current.svg");
+}
+
+.node_access {
+    background-image: url("../img/btn/gm_node_access_btn.svg");
+}
+
+.node_access::after {
+    content: "Node Access";
+}
+
+.node_access.current_page{
+    background-image: url("../img/btn/gm_node_access_btn_current.svg");
+}
+
+.node_access_height {
+    height: auto !important;
+}
+
+.create_edge {
+    background-image: url("../img/btn/gm_create_edge_btn.svg");
+}
+
+.create_edge::after {
+    content: "Create Edge";
+}
+
+.create_edge.current_page {
+    background-image: url("../img/btn/gm_create_edge_btn_current.svg");
+}
+
+.delete_edge {
+    background-image: url("../img/btn/gm_delete_edge_btn.svg");
+}
+
+.delete_edge::after {
+    content: "Delete Edge";
+}
+
+.delete_edge.current_page {
+    background-image: url("../img/btn/gm_delete_edge_btn_current.svg");
+}
+
+/* Report's tab menu ==========*/
+.view_report {
+    background-image: url("../img/btn/report_view_btn.svg");
+}
+
+.view_report::after {
+    content: "View Report";
+}
+
+.view_report.current_page {
+    background-image: url("../img/btn/report_view_btn_current.svg");
+}
+
+.create_report {
+    background-image: url("../img/btn/report_create_btn.svg");
+}
+
+.create_report::after {
+    content: "Create\A Report";
+}
+
+.create_report.current_page {
+    background-image: url("../img/btn/report_create_btn_current.svg");
+}
+
+.edit_report {
+    background-image: url("../img/btn/report_edit_btn.svg");
+}
+
+.edit_report::after {
+    content: "Edit Report";
+}
+
+.edit_report.current_page {
+    background-image: url("../img/btn/report_edit_btn_current.svg");
+}
+
+.delete_report {
+    background-image: url("../img/btn/report_delete_btn.svg");
+}
+
+.delete_report::after {
+    content: "Delete\A Report";
+}
+
+.delete_report.current_page {
+    background-image: url("../img/btn/report_delete_btn_current.svg");
+}
+
+/* admin's tab menu */
+
+.add_user {
+    background-image: url("../img/btn/user_add_btn.svg");
+}
+
+.add_user::after {
+    content: "Add User";
+}
+
+.add_user.current_page {
+    background-image: url("../img/btn/user_add_btn_current.svg");
+}
+
+.role_editor {
+    background-image: url("../img/btn/user_roleeditor_btn.svg");
+}
+
+.role_editor::after {
+    content: "Role Editor";
+}
+
+.role_editor.current_page {
+    background-image: url("../img/btn/user_roleeditor_btn_current.svg");
+}
+
+.division_editor {
+    background-image: url("../img/btn/user_divisioneditor_btn.svg");
+}
+
+.division_editor::after {
+    content: "Division Editor";
+}
+
+.division_editor.current_page {
+    background-image: url("../img/btn/user_divisioneditor_btn_current.svg");
+}
+
+.user_editor {
+    background-image: url("../img/btn/user_roleeditor_btn.svg");
+}
+
+.user_editor::after {
+    content: "User Editor";
+}
+
+.user_editor.current_page {
+    background-image: url("../img/btn/user_roleeditor_btn_current.svg");
+}
+
+.access_editor {
+    background-image: url("../img/btn/user_accesslist_btn.svg");
+}
+
+.access_editor::after {
+    content: "Access Editor";
+}
+
+.access_editor.current_page {
+    background-image: url("../img/btn/user_accesslist_btn_current.svg");
+}
+
+/* current page */
+.current_page,
+.current_task,
+.current_page::after {
+    filter: saturate(150%);
+    position: relative;
+    top: 0%;
+    z-index: 1;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.current_page::after {
+    padding-bottom: .1em;
+    text-decoration: underline;
+}
+
+.current_page::before {
+    content: "";
+    display: block;
+    background-color: var(--primary-color-opacity2);
+    border-radius: 50%;
+    position: absolute;
+    top: 15%;
+    z-index: -1;
+    width: calc(var(--menu-width) * .6);
+    height: calc(var(--menu-width) * .6);
+    background-image: var(--current-gradient);
+}
+
+.current_page:hover::before {
+    width: calc(var(--menu-width) * .7);
+    height: calc(var(--menu-width) * .7);
+    background-image: var(--hover-gradient);
+    z-index: -10;
+}
+
+/* --------sub menu-------- */
+
+.sub_menu {
+    float: left;
+    height: 100%;
+    width: 15%;
+    background-color: var(--primary-color-thin1);
+    box-shadow: var(--shadow8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: var(--font-size3);
+}
+
+/* --------sub menu-------- */
+
+/* --------content-------- */
+.content {
+    height: calc(100vh - var(--header-height));
+    flex: 1 1 0;
+    display: flex;
+    color: var(--fourth-color);
+    padding: 4vh 4vw;
+    overflow: hidden;
+
+}
+
+.column {
+    flex-direction: column;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: .5;
+        filter: grayscale(1), brightness(.2), blur(1);
+    }
+
+    70% {
+        opacity: 1;
+        filter: grayscale(0), brightness(2), blur(0);
+    }
+
+    100% {
+        opacity: 1;
+        filter: grayscale(0), brightness(1), blur(0);
+    }
+}
+
+/* Class to make text unselectable (preventing text cursor to appear, when clicking buttons */
+.unselectable {
+    user-select: none;
+
+    /* Mozilla-specific */
+    -moz-user-select: none;
+
+    /* WebKit-specific */
+    -webkit-user-select: none;
+    /* Microsoft-specific */
+    -ms-user-select: none;
+}
+
+/* Class to hide scrollbar from timeline and canvas */
+.hidden_scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hidden_scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* --------menu and content end-------- */
+
+
+/****====================== ポップアップメニュー start ======================****/
+
+/*============== DataMap Popup start ==============*/
+/*===== Popup Container ====*/
+.popup_container {
+    display: none;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+
+.popup_background {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(3px);
+    -ms-backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 4;
+}
+
+.popup {
+    position: absolute;
+    height: 80%;
+    width: 60%;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color-thin1);
+    z-index: 5;
+    padding-top: 2.5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup_close_button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+    background-image: url("../img/btn/close_btn.svg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.popup_close_button:hover {
+    background-image: url("../img/btn/close_btn_current.svg");
+}
+
+.popup_content {
+    height: 85%;
+    width: 90%;
+    box-sizing: border-box;
+    overflow: auto;
+    display: flex;
+    justify-content: space-between;
+    color: var(--fourth-color);
+}
+
+.popup_content>div:first-child {
+    margin-right: 2em;
+}
+
+.popup_title {
+    font-family: var(--sub-font);
+    font-size: var(--font-size4);
+    font-weight: bold;
+    margin-bottom: 1em;
+    width: 100%;
+    height: 1em;
+    position: relative;
+    color: var(--fourth-color);
+}
+
+.popup_title::after {
+    content: "";
+    display: block;
+    width: 62%;
+    height: 2px;
+    background-color: var(--primary-color);
+    overflow: visible;
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    z-index: -1;
+}
+
+.property_column .popup_title::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    overflow: visible;
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    z-index: -1;
+}
+
+.popup_bottom_container {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    overflow: hidden;
+}
+
+.file_container {
+    width: 100%;
+    height: calc(100% - var(--font-size4) * 2);
+    padding: 1em 1.5em;
+    background-color: var(--fifth-color-opacity1);
+    overflow: auto;
+}
+
+.file_contents_container,
+.file_properties_container {
+    color: var(--fourth-color);
+    width: 48%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.data_image {
+    width: 100%;
+    background-color: var(--fourth-color);
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.file_container pre {
+    word-wrap: break-all !important;
+    -ms-word-wrap: break-all !important;
+    word-break: break-all ! important;
+    word-wrap: break-word !important;
+    white-space: pre-wrap;
+    line-height: 1.7em;
+}
+
+.popup_content_title_arrow {
+    float: left;
+    height: 15px;
+    width: 15px;
+    margin-top: 5px;
+    background-image: url("../img/popup_arrow.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.popup_content_title_text {
+    float: left;
+    height: 100%;
+    width: calc(100% - 25px);
+    margin-left: 5px;
+}
+
+.popup_content_title_text:hover {
+    background: lightgray;
+}
+
+.value_container {
+    display: none;
+    float: left;
+    width: 100%;
+}
+
+.value_element {
+    float: left;
+    height: 20px;
+    width: 100%;
+    padding-left: 40px;
+    font-size: 18px;
+    line-height: 20px;
+    box-sizing: border-box;
+}
+
+.value_element:hover {
+    background-color: lightgray;
+}
+
+.non_selectable_element {
+    pointer-events: none;
+}
+
+.selected_element {
+    background-color: lightgray;
+}
+
+.popup_confirm_message {
+    position: absolute;
+    height: 40px;
+    width: 90%;
+    top: 40px;
+    left: 5%;
+    font-size: 20px;
+    line-height: 40px;
+}
+
+.node_selection_popup_properties {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+}
+
+.node_selection_popup_properties label {
+    margin-bottom: .1em;
+}
+
+.set_properties_popup_properties {
+    float: left;
+    height: 100%;
+    width: calc(50% - 5px);
+    margin-right: 5px;
+    box-sizing: border-box;
+}
+
+.popup_property_element {
+    width: 100%;
+    margin-bottom: 2em;
+    box-sizing: border-box;
+}
+
+.popup_property_element label {
+    display: block;
+    margin-bottom: .2em;
+}
+
+#type_selection_popup_type_select {
+    display: none
+}
+
+#set_properties_popup_property_container {
+    height: auto;
+    overflow-y: auto;
+}
+
+#node_selection_popup_property_container,
+#edit_dataset_property_container {
+    overflow: visible;
+}
+
+#node_selection_popup_property_container{
+    height: auto;
+}
+
+.popup_file_search_container {
+    flex: 1;
+    height: calc(100% - var(--font-size4) * 2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5em 3em;
+    background-color: var(--fifth-color-opacity1);
+    overflow: auto;
+}
+
+.form_container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1em;
+    -ms-row-gap: 1em;
+    -ms-grid-columns: 1fr 1fr;
+    column-gap: 10%;
+    margin-bottom: auto;
+}
+
+.form_container * {
+    border: none;
+}
+
+.popup_element {
+    height: 30px;
+    width: 100%;
+    font-size: 18px;
+    line-height: 30px;
+}
+
+.popup_element_title {
+    float: left;
+    width: 25%;
+}
+
+.popup_element_value {
+    float: left;
+    width: 75%;
+}
+
+.file_list_container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.popup_nodes_list {
+    height: 100%;
+    width: 100%;
+}
+
+.popup_nodes_list,
+.type_list_container {
+    background-color: var(--fifth-color-opacity1);
+    overflow-y: auto;
+    padding: .5em;
+    font-size: var(--font-size3);
+    letter-spacing: .02em;
+}
+
+#set_properties_popup_nodes_list {
+    height: calc(100% - 20px);
+}
+
+.popup_group_container {
+    float: left;
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.popup_group_title {
+    height: 30px;
+    width: 100%;
+    font-size: var(--font-size3);
+    line-height: var(--font-size4);
+    cursor: pointer;
+}
+
+.nodes_list_element,
+.edit_type_element,
+.delete_type_element {
+    float: left;
+    height: var(--font-size3);
+    width: 100%;
+    padding-left: .5em;
+    font-size: var(--font-size2);
+    line-height: var(--font-size3);
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.nodes_list_element:hover,
+.edit_type_element:hover,
+.delete_type_element:hover {
+    background-color: var(--primary-color-opacity4);
+    color: var(--four-color-opacity3);
+    transition: all .3s ease;
+}
+
+.selected_element,
+.popup_selected_element,
+.edit_selected_type,
+.delete_selected_type {
+    background-color: var(--fourth-color-opacity3);
+    color: var(--fifth-color);
+    transition: all .3s ease;
+}
+
+#file_list_element {
+    height: calc(100% - 210px);
+    width: 100%;
+}
+
+.popup_element_file_list {
+    float: left;
+    height: 100%;
+    width: 75%;
+    overflow-y: auto;
+}
+
+/*============== popup end ==============*/
+/****====================== ポップアップメニュー end ======================****/
+
+/****====================== フォーム部品 start ======================****/
+
+label[for="create_edge_source"] {
+    
+}
+
+input:disabled {
+    pointer-events: none;
+    /* box-shadow: none; */
+}
+
+/* ラジオボタン・チェックボックス */
+input[type="radio"],
+input[type="checkbox"] {
+    transform: scale(1.2) translateX(0.1em);
+}
+input[type="radio"] {
+    margin-right: max(0.4em, 5%);
+}
+/****====================== フォーム部品 end ======================****/
+
+/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% メディアクエリ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
+
+@media screen and (max-width: 1366px) {
+    html {
+        /* 1rem=15px */
+        font-size: calc(100% * 15 / 16);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    html {
+        /* 1rem=14px */
+        font-size: calc(100% * 14 / 16);
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    html {
+        /* 1rem=13px */
+        font-size: calc(100% * 13 / 16);
+    }
+}

@@ -1,6 +1,4 @@
 const path = require("path");
-const { use } = require("react");
-const { runtime } = require("webpack");
 
 module.exports = {
   mode: process.env.NODE_ENV ?? "development",
@@ -8,7 +6,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /.tsx?$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: 'ts-loader',
       },
@@ -16,11 +14,22 @@ module.exports = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-  }, 
+  },
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "bundle.js",

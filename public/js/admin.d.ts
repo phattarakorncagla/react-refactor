@@ -1,0 +1,1 @@
+export function changeToTab(tabName: string, changeUrl?: boolean): void;

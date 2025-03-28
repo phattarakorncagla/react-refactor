@@ -12,9 +12,10 @@
     // "rootDir": "./public/js",                  // Specify the root directory of input files
     "lib": ["es2018", "dom"],
   },
-  // "include": [
-  //   "public/js/**/*.ts",                       // Include all TypeScript files in the public/js directory
-  // ],
+  "include": [
+    "public/js/**/*.ts",                       // Include all TypeScript files in the public/js directory
+    "src", "src/images.d.ts"
+, "public/lib", "public/js"  ],
   // "exclude": [
   //   "node_modules"                            // Exclude the node_modules directory
   // ]

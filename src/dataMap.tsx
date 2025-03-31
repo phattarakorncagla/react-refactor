@@ -32,7 +32,7 @@ const DataMapPage: React.FC = () => {
           integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
           crossOrigin="anonymous"
         />
-        <link rel="icon" href="../../public/img/icon/favicon.ico" />
+        <link rel="icon" href="../public/img/icon/favicon.ico" />
         <script src="../public/lib/d3.v5.min.js"></script>
         <script src="../public/js/common.js"></script>
         <script src="../public/js/dataMap.js"></script>
@@ -177,7 +177,7 @@ const DataMapPage: React.FC = () => {
                 <a
                   className="popup_button download_data"
                   id="download_data"
-                //   onClick={() => downloadData(this)}
+                  onClick={(e) => downloadData(e.currentTarget as HTMLAnchorElement)}
                 >
                   Data Download
                 </a>
@@ -189,11 +189,11 @@ const DataMapPage: React.FC = () => {
           </div>
           {/* <Search popup */}
           <div className="popup_container" id="search_popup">
-            <div className="popup_background" onClick={closePopupData}></div>
+            <div className="popup_background" onClick={() => closePopupData()}></div>
             <div className="popup">
               <div
                 className="popup_close_button"
-                onClick={closeSearchPopup}
+                onClick={() => closeSearchPopup()}
               ></div>
               <div className="popup_content" id="search_popup_content">
                 <div className="id_search_container">
@@ -261,14 +261,14 @@ const DataMapPage: React.FC = () => {
                 <div
                   className="popup_button"
                   id="popup_search_button"
-                  onClick={searchNodes}
+                  onClick={() => searchNodes()}
                 >
                   Search
                 </div>
                 <div
                   className="popup_button sub_color"
                   id="popup_reset_button"
-                  onClick={resetSearchPopup}
+                  onClick={() => resetSearchPopup()}
                 >
                   Reset
                 </div>
